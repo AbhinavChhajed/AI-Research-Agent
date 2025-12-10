@@ -1,6 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
+const axios = require("axios");
+const formData = require("form-data");
+const fs = require("fs");
 
 const upload = multer({ dest: 'uploads/' });
 
@@ -10,26 +13,34 @@ app.use(express.json());
 
 const PORT = 5000;
 
-app.post("/analyze",upload.array("files"), (req, res) => {
+app.post("/analyze",upload.array("files"), async (req, res) => {
     if (!req.files || req.files.length === 0) {
         return res.status(400).json({ error: "No files uploaded." });
     }
 
     const uploadedFiles = req.files;
     const userPrompt = req.body.userprompt || "";
-    console.log("------------------------------------------------");
-    console.log(`RECEIVED ${uploadedFiles.length} FILES:`);
-    // List all filenames
-    uploadedFiles.forEach((f, index) => {
-        console.log(` ${index + 1}. ${f.originalname}`);
-    });
-    console.log("Prompt:", userPrompt);
-    console.log("------------------------------------------------");
-    res.json({
-        answer: `Success! I received ${uploadedFiles.length} files and your prompt: "${userPrompt}"`,
-        sources: ["Server Log"]
+    const searchEnabled = req.body.searchenabled || "false"; 
+
+    const form = new formData();
+    form.append("userprompt", userPrompt);
+    form.append("searchenabled", searchEnabled);
+    uploadedFiles.forEach(file => {
+        form.append("files", fs.createReadStream(file.path));
     });
 
+    try{
+        const response = await axios.post("http://localhost:8000/process",form,{
+            headers:{
+                ...form.getHeaders()
+            }
+        });
+        res.json(response.data);
+    }
+    catch(e){
+        console.error("Error processing files:", e);
+        res.status(500).json({ error: "Error processing files." });
+    }
 })
 
 app.listen(PORT, () => {

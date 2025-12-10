@@ -4,18 +4,27 @@ import "./App.css";
 function App() {
   const [files, setFiles] = useState([]);
   const [results, setResults] = useState(null);
-  const [userprompt,setUserprompt] = useState("")
+  const [userprompt,setUserprompt] = useState("");
+  const [searchenabled,setSearchenabled] = useState(false);
+
   console.log(results);
+
   const input_file = (event) => {
     if (event.target.files) {
       setFiles(Array.from(event.target.files));
     }
     setResults(null);
   };
+
   const input_prompt = (event) => {
     event.target.value == "Enter Prompt/Questions"? setUserprompt("") :
     setUserprompt(event.target.value);
-  }
+  };
+
+  const handel_checkbox = (event) => {
+    setSearchenabled(event.target.checked);
+  };
+
   const start_process = async () => {
     if (files.length === 0) return alert("Please upload a file first.");
     const formdata = new FormData();
@@ -23,6 +32,7 @@ function App() {
       formdata.append("files", files[i]);
     }
     formdata.append("userprompt", userprompt);
+    formdata.append("searchenabled", searchenabled);
     
     try{
       setResults("Processing...");
@@ -62,7 +72,7 @@ function App() {
       <section>
         <h3>2. Customization</h3>
         <label>
-          <input type="checkbox" />
+          <input type="checkbox" onChange={handel_checkbox}/>
           Enable Real-time Web Search
         </label>
         <br />
