@@ -85,13 +85,28 @@ function App() {
       </section>
 
       <hr />
-
-      {/* --- Section 3: AI Results --- */}
+{/* --- Section 3: AI Results (FIXED) --- */}
       <section>
         <h3>3. AI Results</h3>
-        <p>
-          <em>AI answers and source links will appear here.</em>
-        </p>
+        
+        {/* Case 1: Nothing happening yet */}
+        {!results && (
+             <p><em>AI answers will appear here.</em></p>
+        )}
+
+        {/* Case 2: Loading or Error (String) */}
+        {typeof results === 'string' && (
+             <p><strong>{results}</strong></p>
+        )}
+
+        {/* Case 3: Success (Object) */}
+        {typeof results === 'object' && results !== null && (
+            <div>
+              <p style={{whiteSpace: "pre-wrap"}}>{results.answer}</p>
+              
+              
+            </div>
+        )}
       </section>
     </div>
   );

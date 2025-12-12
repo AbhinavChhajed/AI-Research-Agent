@@ -4,12 +4,14 @@ from typing import List
 import uvicorn
 import shutil
 import os
+os.environ["TF_USE_LEGACY_KERAS"] = "1"
 from dotenv import load_dotenv
 
 load_dotenv()
 
 # --- MODERN LANGCHAIN IMPORTS ---
 # These are the correct paths for LangChain v0.2/v0.3
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter  # <--- FIXED IMPORT
 from langchain_community.document_loaders import PyPDFLoader
@@ -21,8 +23,9 @@ class AIResponse(BaseModel):
     answer: str
     sources: List[str]
 
-llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0)
-embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+# Try the specific version number
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0)
+embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
 app = FastAPI()
 

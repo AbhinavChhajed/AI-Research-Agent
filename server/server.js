@@ -4,7 +4,7 @@ const multer = require('multer');
 const axios = require("axios");
 const formData = require("form-data");
 const fs = require("fs");
-
+const PYTHON_URL = process.env.PYTHON_URL || "http://localhost:8000/process";
 const upload = multer({ dest: 'uploads/' });
 
 const app = express();
@@ -30,7 +30,7 @@ app.post("/analyze",upload.array("files"), async (req, res) => {
     });
 
     try{
-        const response = await axios.post("http://localhost:8000/process",form,{
+        const response = await axios.post(PYTHON_URL,form,{
             headers:{
                 ...form.getHeaders()
             }

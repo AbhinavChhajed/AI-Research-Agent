@@ -5,7 +5,7 @@
   --primary-hover: #4f46e5;   /* Indigo 600 */
   --bg-color: #f8fafc;        /* Slate 50 */
   --card-bg: #ffffff;
-  --text-main: #0f172a;       /* Slate 900 - Darker for better contrast */
+  --text-main: #0f172a;       /* Slate 900 */
   --text-muted: #64748b;      /* Slate 500 */
   --border: #e2e8f0;          /* Slate 200 */
   --success-bg: #eff6ff;      /* Blue 50 */
@@ -19,7 +19,7 @@
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 
-/* BEST PRACTICE: Global Box Sizing */
+/* Global Box Sizing - Essential for layout stability */
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -29,31 +29,30 @@ body {
   background-color: var(--bg-color);
   color: var(--text-main);
   margin: 0;
-  min-height: 100vh; /* Ensures full height */
+  min-height: 100vh;
   display: flex;
   justify-content: center;
-  /* Use clamp for responsive padding (20px on mobile, 40px on desktop) */
-  padding: clamp(20px, 5vw, 40px); 
-  line-height: 1.5; /* Better readability */
+  /* Responsive padding: min 20px, ideal 5vw, max 40px */
+  padding: clamp(20px, 5vw, 40px);
+  line-height: 1.5;
 }
 
 /* --- 2. Layout Container --- */
 #root > div {
   width: 100%;
-  max-width: 650px; /* Slightly narrower for better reading comfort */
+  max-width: 650px;
   margin: 0 auto;
 }
 
 /* --- 3. Typography --- */
 h1 {
   text-align: center;
-  font-size: clamp(1.8rem, 4vw, 2.5rem); /* Responsive font size */
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
   margin-bottom: 2rem;
   font-weight: 800;
-  letter-spacing: -0.025em; /* Tighten generic fonts */
+  letter-spacing: -0.025em;
   
-  /* Fallback color if gradient fails */
-  color: var(--primary); 
+  color: var(--primary);
   background: linear-gradient(135deg, #4f46e5 0%, #9333ea 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -65,21 +64,21 @@ h3 {
   font-size: 1.125rem;
   font-weight: 600;
   color: var(--text-main);
-  border-bottom: 1px solid var(--border); /* Thinner, cleaner border */
+  border-bottom: 1px solid var(--border);
   padding-bottom: 12px;
   margin-bottom: 24px;
 }
 
-/* --- 4. Cards (Sections) --- */
+/* --- 4. Card Styling (Sections) --- */
 section {
   background: var(--card-bg);
-  padding: 24px; /* Slightly tighter padding */
+  padding: 24px;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
   margin-bottom: 24px;
   border: 1px solid var(--border);
   transition: all 0.2s ease-in-out;
-  position: relative; /* Context for children */
+  position: relative;
 }
 
 section:hover {
@@ -92,7 +91,7 @@ hr { display: none; }
 
 /* --- 5. Form Elements --- */
 
-/* Label Styling */
+/* Labels */
 label {
   display: flex;
   align-items: center;
@@ -104,8 +103,10 @@ label {
   cursor: pointer;
 }
 
-/* Text Inputs */
+/* Inputs & Textareas */
 input[type="text"],
+input[type="password"],
+input[type="email"],
 textarea,
 select {
   width: 100%;
@@ -113,10 +114,14 @@ select {
   margin-bottom: 20px;
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
+  
+  /* Text Color Fix */
+  color: var(--text-main);
+  background-color: #ffffff;
+  
   font-size: 0.95rem;
-  background-color: #fff;
   transition: all 0.2s;
-  appearance: none; /* Removes native OS styles */
+  appearance: none;
 }
 
 input[type="text"]:focus,
@@ -124,18 +129,19 @@ textarea:focus,
 select:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15); /* Slightly clearer ring */
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
 }
 
-input[type="text"]::placeholder {
+input::placeholder {
   color: #94a3b8;
+  opacity: 1;
 }
 
-/* File Input - Visual Improvements */
+/* File Input */
 input[type="file"] {
   display: block;
   width: 100%;
-  padding: 30px 20px; /* Taller click area */
+  padding: 30px 20px;
   background: #f8fafc;
   border: 2px dashed #cbd5e1;
   border-radius: var(--radius-md);
@@ -151,13 +157,13 @@ input[type="file"]:hover {
   color: var(--primary);
 }
 
-/* Checkbox Customization */
+/* Checkbox */
 input[type="checkbox"] {
   width: 18px;
   height: 18px;
   cursor: pointer;
   accent-color: var(--primary);
-  margin: 0; /* Remove default margins */
+  margin: 0;
 }
 
 /* --- 6. Buttons --- */
@@ -173,9 +179,7 @@ button {
   width: 100%;
   transition: all 0.2s;
   box-shadow: 0 4px 6px rgba(79, 70, 229, 0.25);
-  
-  /* Prevent text selection on double click */
-  user-select: none; 
+  user-select: none;
 }
 
 button:hover {
@@ -189,7 +193,6 @@ button:active {
   filter: brightness(100%);
 }
 
-/* Disabled State for Buttons */
 button:disabled {
   background: #cbd5e1;
   cursor: not-allowed;
@@ -197,7 +200,7 @@ button:disabled {
   box-shadow: none;
 }
 
-/* --- 7. Lists (File Names) --- */
+/* --- 7. Lists --- */
 ul {
   list-style: none;
   padding: 0;
@@ -214,34 +217,28 @@ li {
   color: var(--text-main);
   display: flex;
   align-items: center;
-  justify-content: space-between; /* If you add delete buttons later */
 }
 
 li::before {
   content: "📄";
   margin-right: 12px;
-  filter: grayscale(100%); /* Make icon subtle */
+  filter: grayscale(100%);
 }
 
 /* --- 8. Results / Output Section --- */
-/* Note: It is safer to add a class like <div class="results"> 
-   instead of relying on section:last-of-type, but this works 
-   for your current structure.
-*/
 section:last-of-type p {
   background: var(--success-bg);
   border-left: 4px solid var(--success-border);
   padding: 16px 20px;
-  border-radius: 4px; /* Slight radius on the non-border side */
+  border-radius: 4px;
   line-height: 1.7;
   color: #334155;
-  font-family: 'Consolas', 'Monaco', monospace; /* Good for AI outputs/data */
+  font-family: 'Consolas', 'Monaco', monospace;
   font-size: 0.9rem;
   white-space: pre-wrap;
   margin: 0;
 }
 
-/* Placeholder text styling */
 section:last-of-type em {
   display: block;
   text-align: center;
